@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+<h1>Order #{{ order.id }}</h1>
+<p><strong>Customer:</strong> {{ order.customer.name }} | {{ order.customer.phone }}</p>
+<p><strong>Date:</strong> {{ order.created_at|date:"Y-m-d H:i" }}</p>
+<form method="post" action="{% url 'order_status_update' order.id %}">
+{% csrf_token %}
+<label><strong>Status</strong></label>
+<select name="status">
+{% for value,label in order.STATUS_CHOICES %}<option value="{{ value }}" {% if order.status == value %}selected{% endif %}>{{ label }}</option>{% endfor %}
+</select>
+<button class="btn">Update Status</button>
+</form>
+</div>
+<div class="card">
+<h2>Items</h2>
+<table><tr><th>Food</th><th>Unit Price</th><th>Quantity</th><th>Line Total</th></tr>
+{% for item in order.items.all %}<tr><td>{{ item.food.name }}</td><td>Rs. {{ item.unit_price }}</td><td>{{ item.quantity }}</td><td>Rs. {{ item.line_total }}</td></tr>{% endfor %}
+</table>
+<p class="total">Subtotal: Rs. {{ order.subtotal }}<br>Total: Rs. {{ order.total }}</p>
+{% if order.notes %}<p><strong>Notes:</strong> {{ order.notes }}</p>{% endif %}
+</div>
+{% endblock %}

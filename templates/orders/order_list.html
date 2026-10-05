@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Order History</h1>
+<form method="get">
+<select name="status">
+<option value="">All statuses</option>
+{% for value,label in status_choices %}<option value="{{ value }}" {% if status == value %}selected{% endif %}>{{ label }}</option>{% endfor %}
+</select>
+<button class="btn">Filter</button>
+<a class="btn" href="{% url 'order_create' %}">+ New Order</a>
+</form>
+<div class="card"><table><tr><th>Order</th><th>Customer</th><th>Date</th><th>Status</th><th>Total</th></tr>
+{% for order in orders %}
+<tr><td><a href="{% url 'order_detail' order.id %}">#{{ order.id }}</a></td><td>{{ order.customer.name }}</td><td>{{ order.created_at|date:"Y-m-d H:i" }}</td><td>{{ order.get_status_display }}</td><td>Rs. {{ order.total }}</td></tr>
+{% empty %}<tr><td colspan="5">No orders.</td></tr>{% endfor %}
+</table></div>
+{% endblock %}

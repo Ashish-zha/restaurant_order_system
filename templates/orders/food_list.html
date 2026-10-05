@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Food</h1>
+<form method="get"><input name="q" value="{{ q }}" placeholder="Search food/category"><button class="btn">Search</button></form>
+<p><a class="btn" href="{% url 'food_create' %}">+ Add Food</a></p>
+<div class="card"><table><tr><th>Name</th><th>Category</th><th>Price</th><th>Available</th><th>Actions</th></tr>
+{% for food in foods %}<tr><td>{{ food.name }}</td><td>{{ food.category.name }}</td><td>Rs. {{ food.price }}</td><td>{{ food.available|yesno:"Yes,No" }}</td><td>
+<a href="{% url 'food_update' food.id %}">Edit</a> | <a href="{% url 'food_delete' food.id %}">Delete</a></td></tr>
+{% empty %}<tr><td colspan="5">No food items.</td></tr>{% endfor %}
+</table></div>
+{% endblock %}

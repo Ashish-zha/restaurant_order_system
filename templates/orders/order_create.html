@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Create Order</h1>
+<div class="card">
+<form method="post">{% csrf_token %}
+{{ form.as_p }}
+<h2>Select Food</h2>
+<table>
+<tr><th>Food</th><th>Category</th><th>Price</th><th>Quantity</th></tr>
+{% for food in foods %}
+<tr>
+<td>{{ food.name }}<input type="hidden" name="food_id" value="{{ food.id }}"></td>
+<td>{{ food.category.name }}</td>
+<td>Rs. {{ food.price }}</td>
+<td><input type="number" name="quantity" min="0" value="0"></td>
+</tr>
+{% empty %}<tr><td colspan="4">No available food. Add food first.</td></tr>{% endfor %}
+</table>
+<br><button class="btn" type="submit">Create Order</button>
+</form>
+</div>
+{% endblock %}
